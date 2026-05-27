@@ -15,6 +15,7 @@ import ReactBitsBackground from "./components/ReactBitsBackground";
 import { prefersReducedMotion } from "./utils/gsap";
 
 function App() {
+  const [theme, setTheme] = useState("dark");
   const [currentPage, setCurrentPage] = useState("home");
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -26,7 +27,20 @@ function App() {
       setIsLoggedIn(true);
       setUser(getStoredUser());
     }
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme === "light" || storedTheme === "dark") {
+      setTheme(storedTheme);
+    } else if (window.matchMedia) {
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      setTheme(prefersDark ? "dark" : "light");
+    }
   }, []);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("light", theme === "light");
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   useLayoutEffect(() => {
     if (!headerRef.current || currentPage !== "home") return;
@@ -89,6 +103,10 @@ function App() {
       ? "dashboard"
       : "default";
 
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
+  };
+
   const renderPage = () => {
     switch (currentPage) {
       case "login":
@@ -141,13 +159,30 @@ function App() {
   const showNav = currentPage === "home";
 
   return (
-    <div className="relative min-h-screen text-slate-100 overflow-x-hidden">
-      <ReactBitsBackground variant={bgVariant} />
+      <div
+        className={`relative min-h-screen overflow-x-hidden ${
+          theme === "light" ? "text-slate-900" : "text-slate-100"
+        }`}
+      >
+  <div className="fixed right-4 top-4 z-50">
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className={`rounded-full border px-4 py-2 text-sm shadow-lg transition ${
+              theme === "light"
+                ? "border-slate-300 bg-white/90 text-slate-900 shadow-slate-400/10 hover:bg-slate-100"
+                : "border-slate-600/80 bg-slate-950/80 text-slate-100 shadow-slate-950/20 hover:bg-slate-800/90"
+            }`}
+          >
+            {theme === "dark" ? "Light Mode" : "Dark Mode"}
+          </button>
+        </div>
+  <ReactBitsBackground variant={bgVariant} theme={theme} />
 
       <ToastContainer
         position="top-right"
         autoClose={3000}
-        theme="dark"
+        theme={theme}
         hideProgressBar={false}
         newestOnTop
         closeOnClick

@@ -27,15 +27,15 @@ const THEMES = {
   },
 };
 
-export default function ReactBitsBackground({ variant = "default" }) {
-  const theme = THEMES[variant] || THEMES.default;
+export default function ReactBitsBackground({ variant = "default", theme = "dark" }) {
+  const auroraTheme = THEMES[variant] || THEMES.default;
   const reduced = prefersReducedMotion();
 
-  if (reduced) {
+  if (reduced || theme === "light") {
     return (
       <div className="pointer-events-none fixed inset-0 -z-10" aria-hidden>
-        <div className="absolute inset-0 bg-[#030712]" />
-        <div className="absolute inset-0 bg-gradient-to-br from-violet-950/50 via-slate-950 to-cyan-950/30" />
+        <div className="absolute inset-0 bg-[#f8fafc]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-100/90 via-violet-100/80 to-cyan-100/70" />
         <div className="absolute inset-0 bg-vignette" />
       </div>
     );
@@ -49,10 +49,10 @@ export default function ReactBitsBackground({ variant = "default" }) {
       <div className="absolute inset-0 bg-[#030712]/80" />
       <div className="absolute inset-0">
         <Aurora
-          colorStops={theme.colorStops}
-          amplitude={theme.amplitude}
-          blend={theme.blend}
-          speed={theme.speed}
+          colorStops={auroraTheme.colorStops}
+          amplitude={auroraTheme.amplitude}
+          blend={auroraTheme.blend}
+          speed={auroraTheme.speed}
         />
       </div>
       <div className="absolute inset-0 bg-grid opacity-[0.2]" />

@@ -27,7 +27,7 @@ export default function Dashboard({ user, onLogout, onBackToHome }) {
     try {
       const [urlsResponse, statsResponse] = await Promise.all([
         getUserUrls(),
-        getUserStats(),
+        // getUserStats(),
       ]);
       setUrls(urlsResponse.urls || []);
       setStats(statsResponse);
@@ -89,9 +89,9 @@ export default function Dashboard({ user, onLogout, onBackToHome }) {
     }
   };
 
-  const handleCopyUrl = async (shortUrl) => {
-    await navigator.clipboard.writeText(shortUrl);
-    toast.success("URL copied to clipboard!");
+  const handleCopyUrl = async (url) => {
+    await navigator.clipboard.writeText(url);
+    toast.success("Copied to clipboard!");
   };
 
   const handleOpenUrl = (shortUrl) => {
@@ -115,7 +115,7 @@ export default function Dashboard({ user, onLogout, onBackToHome }) {
 
   return (
     <PageShell>
-    <div ref={containerRef} className="min-h-screen text-slate-100">
+    <div ref={containerRef} className="min-h-screen">
       <div className="mx-auto max-w-6xl px-6 py-8">
         {/* Header */}
         <div data-animate className="flex items-center justify-between mb-8">
@@ -134,13 +134,13 @@ export default function Dashboard({ user, onLogout, onBackToHome }) {
               Welcome back, <span className="font-semibold text-violet-300">{user?.name || user?.email}</span>
             </p>
           </div>
-          <button
-            type="button"
-            onClick={onBackToHome}
-            className="rounded-xl border border-slate-600/80 px-4 py-2 text-slate-300 transition hover:bg-slate-800/80"
-          >
-            ← Back to Shortener
-          </button>
+            <button
+              type="button"
+              onClick={onBackToHome}
+              className="rounded-xl border border-slate-600/80 px-4 py-2 text-slate-300 transition hover:bg-slate-800/80"
+            >
+              ← Back to Shortener
+            </button>
         </div>
 
         {/* Tabs */}
@@ -197,9 +197,9 @@ export default function Dashboard({ user, onLogout, onBackToHome }) {
             )}
 
             {/* URLs List */}
-            <div data-animate className="glass-card rounded-2xl overflow-hidden">
-              <div className="px-6 py-4 border-b border-slate-700">
-                <h2 className="text-lg font-semibold">Your Shortened URLs</h2>
+              <div data-animate className="glass-card rounded-2xl overflow-hidden">
+                <div className="px-6 py-4 border-b border-slate-700">
+                  <h2 className="text-lg font-semibold">Your Shortened URLs</h2>
                 {urls.length > 0 && (
                   <p className="text-sm text-slate-400 mt-1">
                     Manage your shortened URLs here
@@ -265,13 +265,18 @@ export default function Dashboard({ user, onLogout, onBackToHome }) {
                             >
                               {url.shortUrl}
                             </a>
+                          </div>
+
+                          <div className="flex flex-wrap items-center gap-2 text-xs text-slate-300 mb-2">
                             <button
-                              onClick={() => handleCopyUrl(url.shortUrl)}
-                              className="shrink-0 p-1 hover:bg-slate-600 rounded transition text-slate-400 hover:text-white"
-                              title="Copy"
+                              type="button"
+                              onClick={() => handleCopyUrl(url.longUrl)}
+                              className="inline-flex items-center gap-1 rounded-full border border-slate-600/80 bg-slate-800/80 px-2 py-1 text-slate-300 transition hover:bg-slate-700/80"
+                              title="Copy original URL"
+                              aria-label="Copy original URL"
                             >
                               <svg
-                                className="w-4 h-4"
+                                className="w-3.5 h-3.5"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -284,11 +289,9 @@ export default function Dashboard({ user, onLogout, onBackToHome }) {
                                 />
                               </svg>
                             </button>
+                            <span className="font-semibold text-slate-100">Original:</span>
+                            <span className="font-semibold text-slate-100">{truncateUrl(url.longUrl)}</span>
                           </div>
-
-                          <p className="text-xs text-slate-500 mb-2">
-                            Original: {truncateUrl(url.longUrl)}
-                          </p>
 
                           <div className="flex items-center gap-3 text-xs text-slate-400">
                             <span>📊 {url.clicks || 0} clicks</span>
@@ -372,8 +375,8 @@ export default function Dashboard({ user, onLogout, onBackToHome }) {
 
         {/* Create New Tab */}
         {activeTab === "create" && (
-          <div className="max-w-2xl mx-auto">
-            <div className="glass-card rounded-2xl p-8">
+            <div className="max-w-2xl mx-auto">
+              <div className="glass-card rounded-2xl p-8">
               <h2 className="text-2xl font-bold mb-6 text-gradient">Create New Short URL</h2>
 
               <form onSubmit={handleShorten} className="space-y-4">
@@ -430,7 +433,7 @@ export default function Dashboard({ user, onLogout, onBackToHome }) {
                 </button>
               </form>
 
-              <div className="mt-6 pt-6 border-t border-slate-700">
+                  <div className="mt-6 pt-6 border-t border-slate-700">
                 <p className="text-sm text-slate-400">
                   💡 Tip: All your shortened URLs will appear in the dashboard
                   for easy management and tracking.
