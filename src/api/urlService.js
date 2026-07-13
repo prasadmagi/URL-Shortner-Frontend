@@ -3,9 +3,11 @@ import { getAuthToken } from "./authService";
 import { getShortUrl } from "../utils/url";
 
 /** POST /api/url or /api/url/auth — anonymous (max 2/IP) or logged-in user */
-export const shortenUrl = async (longUrl, password = null) => {
+export const shortenUrl = async (longUrl, password = null, customAlias = null) => {
   const endpoint = getAuthToken() ? "/api/url/auth" : "/api/url";
-  const payload = password ? { longUrl, password } : { longUrl };
+  const payload = { longUrl };
+  if (password) payload.password = password;
+  if (customAlias) payload.customAlias = customAlias;
   const { data } = await client.post(endpoint, payload);
 
   return {

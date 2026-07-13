@@ -13,6 +13,7 @@ export default function Home({
 }) {
   const [longUrl, setLongUrl] = useState("");
   const [password, setPassword] = useState("");
+  const [customAlias, setCustomAlias] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -35,9 +36,10 @@ export default function Home({
 
     setLoading(true);
     try {
-      const data = await shortenUrl(trimmed, password || null);
+      const data = await shortenUrl(trimmed, password || null, customAlias || null);
       setResult(data);
       setPassword(""); // Clear password after successful creation
+      setCustomAlias(""); // Clear custom alias
       toast.success(data.message || "URL shortened successfully!");
     } catch (err) {
       const message =
@@ -116,12 +118,20 @@ export default function Home({
               {loading ? "Shortening…" : "Shorten"}
             </button>
           </div>
-          <div className="flex justify-start">
+          <div className="flex flex-col sm:flex-row justify-start gap-3">
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Optional Password"
+              className="glass-card w-full sm:w-64 rounded-xl px-5 py-3 text-sm text-white outline-none placeholder:text-slate-500 focus:ring-2 focus:ring-violet-500/50 transition"
+              disabled={loading}
+            />
+            <input
+              type="text"
+              value={customAlias}
+              onChange={(e) => setCustomAlias(e.target.value)}
+              placeholder="Optional Custom Alias (e.g. my-link)"
               className="glass-card w-full sm:w-64 rounded-xl px-5 py-3 text-sm text-white outline-none placeholder:text-slate-500 focus:ring-2 focus:ring-violet-500/50 transition"
               disabled={loading}
             />
