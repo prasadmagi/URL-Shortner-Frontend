@@ -3,9 +3,10 @@ import { getAuthToken } from "./authService";
 import { getShortUrl } from "../utils/url";
 
 /** POST /api/url or /api/url/auth — anonymous (max 2/IP) or logged-in user */
-export const shortenUrl = async (longUrl) => {
+export const shortenUrl = async (longUrl, password = null) => {
   const endpoint = getAuthToken() ? "/api/url/auth" : "/api/url";
-  const { data } = await client.post(endpoint, { longUrl });
+  const payload = password ? { longUrl, password } : { longUrl };
+  const { data } = await client.post(endpoint, payload);
 
   return {
     message: data.message,
@@ -14,4 +15,9 @@ export const shortenUrl = async (longUrl) => {
     isAnonymous: data.isAnonymous,
     shortUrl: getShortUrl(data.shortCode),
   };
+};
+
+export const verifyUrlPassword = async (shortCode, password) => {
+  const { data } = await client.post(`/api/url/${shortCode}/verify`, { password });
+  return data;
 };

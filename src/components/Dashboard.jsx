@@ -12,6 +12,7 @@ export default function Dashboard({ user, onLogout, onBackToHome }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [longUrl, setLongUrl] = useState("");
+  const [password, setPassword] = useState("");
   const [shortening, setShortening] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(null);
   const [activeTab, setActiveTab] = useState("dashboard"); // dashboard, create
@@ -57,9 +58,10 @@ export default function Dashboard({ user, onLogout, onBackToHome }) {
 
     setShortening(true);
     try {
-      const data = await shortenUrl(trimmed);
+      const data = await shortenUrl(trimmed, password || null);
       setUrls([{ ...data, createdAt: new Date().toISOString() }, ...urls]);
       setLongUrl("");
+      setPassword("");
       toast.success("URL shortened successfully!");
       setActiveTab("dashboard");
     } catch (err) {
@@ -393,6 +395,24 @@ export default function Dashboard({ user, onLogout, onBackToHome }) {
                     value={longUrl}
                     onChange={(e) => setLongUrl(e.target.value)}
                     placeholder="https://example.com/very-long-url"
+                    className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                    disabled={shortening}
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium text-slate-300 mb-2"
+                  >
+                    Password Protection (Optional)
+                  </label>
+                  <input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Leave blank for public URL"
                     className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                     disabled={shortening}
                   />

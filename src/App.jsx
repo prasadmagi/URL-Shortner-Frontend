@@ -11,6 +11,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Dashboard from "./components/Dashboard";
 import AdminDashboard from "./components/AdminDashboard";
+import UnlockUrl from "./components/UnlockUrl";
 import ReactBitsBackground from "./components/ReactBitsBackground";
 import { prefersReducedMotion } from "./utils/gsap";
 
@@ -33,6 +34,11 @@ function App() {
     } else if (window.matchMedia) {
       const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
       setTheme(prefersDark ? "dark" : "light");
+    }
+
+    // Check for unlock route
+    if (window.location.pathname.startsWith("/unlock/")) {
+      setCurrentPage("unlock");
     }
   }, []);
 
@@ -139,6 +145,15 @@ function App() {
             user={user}
             onLogout={handleLogout}
             onBackToHome={() => setCurrentPage("home")}
+          />
+        );
+      case "unlock":
+        return (
+          <UnlockUrl
+            onBackToHome={() => {
+              window.history.pushState({}, '', '/');
+              setCurrentPage("home");
+            }}
           />
         );
       case "home":

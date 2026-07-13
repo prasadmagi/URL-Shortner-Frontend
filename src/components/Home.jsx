@@ -12,6 +12,7 @@ export default function Home({
   onDashboardClick,
 }) {
   const [longUrl, setLongUrl] = useState("");
+  const [password, setPassword] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -34,8 +35,9 @@ export default function Home({
 
     setLoading(true);
     try {
-      const data = await shortenUrl(trimmed);
+      const data = await shortenUrl(trimmed, password || null);
       setResult(data);
+      setPassword(""); // Clear password after successful creation
       toast.success(data.message || "URL shortened successfully!");
     } catch (err) {
       const message =
@@ -95,23 +97,35 @@ export default function Home({
         <form
           data-animate
           onSubmit={handleShorten}
-          className="mx-auto mt-12 flex max-w-2xl flex-col gap-3 sm:flex-row"
+          className="mx-auto mt-12 flex max-w-2xl flex-col gap-3"
         >
-          <input
-            type="url"
-            value={longUrl}
-            onChange={(e) => setLongUrl(e.target.value)}
-            placeholder="https://example.com/very-long-url"
-            className="glass-card flex-1 rounded-xl px-5 py-4 text-sm text-white outline-none placeholder:text-slate-500 focus:ring-2 focus:ring-violet-500/50 transition"
-            disabled={loading}
-          />
-          <button
-            type="submit"
-            disabled={loading}
-            className="btn-glow rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 px-8 py-4 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {loading ? "Shortening…" : "Shorten"}
-          </button>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <input
+              type="url"
+              value={longUrl}
+              onChange={(e) => setLongUrl(e.target.value)}
+              placeholder="https://example.com/very-long-url"
+              className="glass-card flex-1 rounded-xl px-5 py-4 text-sm text-white outline-none placeholder:text-slate-500 focus:ring-2 focus:ring-violet-500/50 transition"
+              disabled={loading}
+            />
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn-glow rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 px-8 py-4 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {loading ? "Shortening…" : "Shorten"}
+            </button>
+          </div>
+          <div className="flex justify-start">
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Optional Password"
+              className="glass-card w-full sm:w-64 rounded-xl px-5 py-3 text-sm text-white outline-none placeholder:text-slate-500 focus:ring-2 focus:ring-violet-500/50 transition"
+              disabled={loading}
+            />
+          </div>
         </form>
 
         {error && (
