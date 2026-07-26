@@ -13,6 +13,7 @@ import Dashboard from "./components/Dashboard";
 import AdminDashboard from "./components/AdminDashboard";
 import UnlockUrl from "./components/UnlockUrl";
 import ReactBitsBackground from "./components/ReactBitsBackground";
+import Chatbot from "./components/Chatbot";
 import { prefersReducedMotion } from "./utils/gsap";
 
 function App() {
@@ -270,6 +271,7 @@ function App() {
       <div ref={pageRef} key={currentPage}>
         {renderPage()}
       </div>
+      <Chatbot user={user} isAdmin={isAdmin} />
     </div>
   );
 }

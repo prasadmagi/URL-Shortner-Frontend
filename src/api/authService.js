@@ -1,7 +1,11 @@
 import axios from "axios";
 
-const LOGIN_URL = "https://url-shortner-backend-beta.vercel.app/api/auth/login";
-const SIGNUP_URL = "https://url-shortner-backend-beta.vercel.app/api/auth/signup";
+const BACKEND_URL = import.meta.env.DEV 
+  ? "http://localhost:4000" 
+  : (import.meta.env.VITE_BACKEND_URL || "https://url-shortner-backend-beta.vercel.app");
+
+const LOGIN_URL = `${BACKEND_URL}/api/auth/login`;
+const SIGNUP_URL = `${BACKEND_URL}/api/auth/signup`;
 
 /**
  * POST /api/auth/login — authenticate user

@@ -1,8 +1,12 @@
 import axios from "axios";
 import { getAuthToken } from "./authService";
 
+const BACKEND_URL = import.meta.env.DEV 
+  ? "http://localhost:4000" 
+  : (import.meta.env.VITE_BACKEND_URL || "https://url-shortner-backend-beta.vercel.app");
+
 const client = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL,
+  baseURL: BACKEND_URL,
   headers: { "Content-Type": "application/json" },
 });
 
