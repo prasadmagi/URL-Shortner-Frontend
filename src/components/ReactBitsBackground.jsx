@@ -32,6 +32,16 @@ export default function ReactBitsBackground({ variant = "default", theme = "dark
   const reduced = prefersReducedMotion();
 
   if (reduced || theme === "light") {
+    if (theme === "dark") {
+      return (
+        <div className="pointer-events-none fixed inset-0 -z-10" aria-hidden>
+          <div className="absolute inset-0 bg-[#030712]" />
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-900/90 via-violet-900/30 to-cyan-900/20" />
+          <div className="absolute inset-0 bg-grid opacity-[0.2]" />
+          <div className="absolute inset-0 bg-vignette" />
+        </div>
+      );
+    }
     return (
       <div className="pointer-events-none fixed inset-0 -z-10" aria-hidden>
         <div className="absolute inset-0 bg-[#f8fafc]" />

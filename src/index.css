@@ -16,6 +16,8 @@ body {
   letter-spacing: 0.01em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #030712;
+  color: #f8fafc;
 }
 
 h1,

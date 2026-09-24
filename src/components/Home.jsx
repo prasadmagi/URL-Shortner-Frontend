@@ -6,6 +6,7 @@ import PageShell from "./layout/PageShell";
 import TextType from "@/components/TextType/TextType";
 
 export default function Home({
+  theme,
   isLoggedIn,
   onLoginClick,
   onSignupClick,
@@ -65,7 +66,11 @@ export default function Home({
       <section className="text-center">
         <p
           data-animate
-          className="mb-4 inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-1.5 text-xs font-medium uppercase tracking-wider text-violet-300"
+          className={`mb-4 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-medium uppercase tracking-wider ${
+            theme === "light"
+              ? "border-violet-300 bg-violet-100/50 text-violet-700"
+              : "border-violet-500/30 bg-violet-500/10 text-violet-300"
+          }`}
         >
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
           Fast · Secure · Free
@@ -87,11 +92,15 @@ export default function Home({
             showCursor
             cursorCharacter="|"
             cursorClassName="text-type__cursor"
-            textColors={["#f1f5f9", "#c4b5fd", "#67e8f9"]}
+            textColors={
+              theme === "light"
+                ? ["#4f46e5", "#7c3aed", "#0891b2"]
+                : ["#f1f5f9", "#c4b5fd", "#67e8f9"]
+            }
           />
         </div>
 
-        <p data-animate className="mx-auto mt-5 max-w-xl text-lg text-slate-400/90 font-light">
+        <p data-animate className={`mx-auto mt-5 max-w-xl text-lg font-light ${theme === "light" ? "text-slate-600" : "text-slate-400/90"}`}>
           Paste a long URL below and get a short link instantly.
           {!isLoggedIn && " No login required — up to 2 links per device."}
         </p>
@@ -153,7 +162,7 @@ export default function Home({
               data-result
               className="glass-card mx-auto mt-8 max-w-2xl rounded-2xl border border-emerald-500/25 p-6 text-left"
             >
-              <p className="text-sm font-medium text-emerald-400">
+              <p className={`text-sm font-medium ${theme === "light" ? "text-emerald-600" : "text-emerald-400"}`}>
                 {result.message}
               </p>
 
@@ -162,24 +171,32 @@ export default function Home({
                   href={result.shortUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="truncate text-sm font-medium text-violet-400 hover:text-violet-300 transition"
+                  className={`truncate text-sm font-medium transition ${
+                    theme === "light" ? "text-violet-600 hover:text-violet-500" : "text-violet-400 hover:text-violet-300"
+                  }`}
                 >
                   {result.shortUrl}
                 </a>
                 <button
                   type="button"
                   onClick={handleCopy}
-                  className="shrink-0 rounded-lg border border-slate-600/80 px-3 py-1.5 text-xs text-slate-300 transition hover:bg-slate-700/50"
+                  className={`shrink-0 rounded-lg border px-3 py-1.5 text-xs transition ${
+                    theme === "light"
+                      ? "border-slate-300 text-slate-700 hover:bg-slate-100"
+                      : "border-slate-600/80 text-slate-300 hover:bg-slate-700/50"
+                  }`}
                 >
                   Copy
                 </button>
               </div>
 
-              <p className="mt-3 truncate text-xs text-slate-500">
+              <p className={`mt-3 truncate text-xs ${theme === "light" ? "text-slate-500" : "text-slate-500"}`}>
                 Original: {result.longUrl}
               </p>
               {result.isAnonymous && (
-                <span className="mt-3 inline-block rounded-full bg-slate-800/80 px-3 py-1 text-xs text-slate-400">
+                <span className={`mt-3 inline-block rounded-full px-3 py-1 text-xs ${
+                  theme === "light" ? "bg-slate-100 text-slate-600" : "bg-slate-800/80 text-slate-400"
+                }`}>
                   Anonymous · {result.shortCode}
                 </span>
               )}
@@ -192,7 +209,7 @@ export default function Home({
             data-animate
             className="glass-card mx-auto mt-16 max-w-2xl rounded-2xl p-8"
           >
-            <p className="text-slate-300 mb-6">
+            <p className={`mb-6 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
               Want to track your links and get unlimited access?
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
@@ -206,7 +223,11 @@ export default function Home({
               <button
                 type="button"
                 onClick={onSignupClick}
-                className="rounded-xl border border-violet-500/50 px-8 py-2.5 font-medium text-violet-300 transition hover:bg-violet-500/10"
+                className={`rounded-xl border px-8 py-2.5 font-medium transition ${
+                  theme === "light"
+                    ? "border-violet-400 text-violet-700 hover:bg-violet-50"
+                    : "border-violet-500/50 text-violet-300 hover:bg-violet-500/10"
+                }`}
               >
                 Sign Up
               </button>
@@ -217,9 +238,11 @@ export default function Home({
         {isLoggedIn && (
           <div
             data-animate
-            className="glass-card mx-auto mt-16 max-w-2xl rounded-2xl border border-cyan-500/20 p-8"
+            className={`glass-card mx-auto mt-16 max-w-2xl rounded-2xl border p-8 ${
+              theme === "light" ? "border-cyan-300" : "border-cyan-500/20"
+            }`}
           >
-            <p className="text-cyan-200/90 mb-6">
+            <p className={`mb-6 ${theme === "light" ? "text-cyan-800" : "text-cyan-200/90"}`}>
               Check your dashboard to manage all your shortened URLs and track
               clicks.
             </p>

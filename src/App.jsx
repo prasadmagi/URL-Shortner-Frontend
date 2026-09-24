@@ -119,6 +119,7 @@ function App() {
       case "login":
         return (
           <Login
+            theme={theme}
             onLoginSuccess={handleLoginSuccess}
             onSignupClick={() => setCurrentPage("signup")}
             onBackToHome={() => setCurrentPage("home")}
@@ -127,6 +128,7 @@ function App() {
       case "signup":
         return (
           <Signup
+            theme={theme}
             onSignupSuccess={handleSignupSuccess}
             onLoginClick={() => setCurrentPage("login")}
             onBackToHome={() => setCurrentPage("home")}
@@ -135,6 +137,7 @@ function App() {
       case "dashboard":
         return (
           <Dashboard
+            theme={theme}
             user={user}
             onLogout={handleLogout}
             onBackToHome={() => setCurrentPage("home")}
@@ -161,6 +164,7 @@ function App() {
       default:
         return (
           <Home
+            theme={theme}
             isLoggedIn={isLoggedIn}
             user={user}
             onLogout={handleLogout}
